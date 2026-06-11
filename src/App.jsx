@@ -1,0 +1,639 @@
+import myPhoto from './assets/image1.png';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Github, 
+  Linkedin, 
+  Mail, 
+  ExternalLink, 
+  Code2, 
+  Palette, 
+  Terminal, 
+  Database,
+  ChevronDown,
+  Send,
+  Menu,
+  X,
+  Star
+} from 'lucide-react';
+
+// Animation variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 60 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: "easeOut" }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const skillVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.4 }
+};
+
+// Data
+const skills = [
+  { name: "React.js", icon: <Code2 size={24} />, level: 95, color: "bg-blue-500" },
+  { name: "TypeScript", icon: <Terminal size={24} />, level: 90, color: "bg-blue-600" },
+  { name: "Node.js", icon: <Database size={24} />, level: 85, color: "bg-green-500" },
+  { name: "UI/UX Design", icon: <Palette size={24} />, level: 88, color: "bg-purple-500" },
+  { name: "Next.js", icon: <Star size={24} />, level: 82, color: "bg-gray-800" },
+  { name: "Tailwind CSS", icon: <Code2 size={24} />, level: 92, color: "bg-cyan-500" },
+];
+
+const projects = [
+  {
+    id: 1,
+    title: "E-Commerce Platform",
+    description: "Full-stack e-commerce solution with real-time inventory, payment processing, and admin dashboard.",
+    tech: ["React", "Node.js", "MongoDB", "Stripe"],
+    image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=500&fit=crop",
+    github: "https://github.com",
+    live: "https://example.com"
+  },
+  {
+    id: 2,
+    title: "AI Task Manager",
+    description: "Smart task management app with AI-powered prioritization and natural language input.",
+    tech: ["Next.js", "OpenAI", "Prisma", "PostgreSQL"],
+    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=500&fit=crop",
+    github: "https://github.com",
+    live: "https://example.com"
+  },
+  {
+    id: 3,
+    title: "Real-time Analytics Dashboard",
+    description: "Interactive data visualization dashboard with WebSocket updates and custom charts.",
+    tech: ["React", "D3.js", "WebSocket", "Redis"],
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop",
+    github: "https://github.com",
+    live: "https://example.com"
+  },
+  {
+    id: 4,
+    title: "Social Media App",
+    description: "Mobile-first social platform with real-time messaging, stories, and content recommendations.",
+    tech: ["React Native", "Firebase", "GraphQL", "AWS"],
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=500&fit=crop",
+    github: "https://github.com",
+    live: "https://example.com"
+  }
+];
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Contact', href: '#contact' }
+  ];
+
+  return (
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      scrolled ? 'bg-white/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+          >
+            Portfolio
+          </motion.div>
+
+          <div className="hidden md:flex space-x-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+
+          <button 
+            className="md:hidden p-2"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-white border-t"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="block px-4 py-3 text-gray-700 hover:bg-gray-50"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+const Hero = () => {
+  return (
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
+        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+          className="text-center"
+        >
+          <motion.div variants={fadeInUp} className="mb-6">
+            <span className="inline-block px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-4">
+              Available for Hire
+            </span>
+          </motion.div>
+
+          <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+            Hi, I'm  <span  className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Okello Righan</span>
+          </motion.h1>
+
+          <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Full-Stack Developer & UI/UX Designer crafting beautiful digital experiences
+          </motion.p>
+
+          <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#projects" className="px-8 py-4 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-all hover:shadow-lg hover:scale-105">
+              View My Work
+            </a>
+            <a href="#contact" className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-full font-semibold hover:border-blue-600 hover:text-blue-600 transition-all">
+              Contact Me
+            </a>
+          </motion.div>
+
+          <motion.div variants={fadeInUp} className="mt-12 flex justify-center gap-6">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
+              <Github size={28} />
+            </a>
+            <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors">
+              <Linkedin size={28} />
+            </a>
+            <a href="mailto:okellorighan3@gmail.com" className="text-gray-600 hover:text-red-500 transition-colors">
+              <Mail size={28} />
+            </a>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      <motion.div 
+        animate={{ y: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+      >
+        <ChevronDown size={32} className="text-gray-400" />
+      </motion.div>
+    </section>
+  );
+};
+
+const About = () => {
+  return (
+    <section id="about" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">About Me</h2>
+          <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full" />
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="relative">
+              <div className="w-full h-96 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl overflow-hidden shadow-xl">
+                <img 
+                  src={myPhoto} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                <div className="text-center">
+                  <div className="text-3xl font-bold">2+</div>
+                  <div className="text-sm">Years Exp.</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Passionate about building products that make a difference
+            </h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              I'm a full-stack developer with a passion for creating intuitive, dynamic user experiences. 
+              With expertise in modern JavaScript frameworks and a keen eye for design, I bridge the gap 
+              between engineering and aesthetics.
+            </p>
+            <p className="text-gray-600 mb-8 leading-relaxed">
+              When I'm not coding, you'll find me exploring new technologies, contributing to open-source 
+              projects, or sharing knowledge with the developer community.
+            </p>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600">12+</div>
+                <div className="text-gray-600">Projects Completed</div>
+              </div>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600">8+</div>
+                <div className="text-gray-600">Happy Clients</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">Technical Skills</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {skills.map((skill, index) => (
+              <motion.div
+                key={skill.name}
+                variants={skillVariants}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-100"
+              >
+                <div className={`w-12 h-12 ${skill.color} rounded-lg flex items-center justify-center text-white mb-4 mx-auto`}>
+                  {skill.icon}
+                </div>
+                <h4 className="font-semibold text-gray-900 text-center mb-2">{skill.name}</h4>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <motion.div 
+                    className={`h-2 rounded-full ${skill.color}`}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${skill.level}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </div>
+                <p className="text-center text-sm text-gray-500 mt-1">{skill.level}%</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const Projects = () => {
+  return (
+    <section id="projects" className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Projects</h2>
+          <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mb-4" />
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            A selection of my recent work, showcasing my expertise in full-stack development and UI/UX design.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
+              <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300">
+                <div className="relative overflow-hidden h-64">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-6">
+                    <div className="flex gap-3">
+                      <a 
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-white rounded-full text-gray-900 hover:bg-blue-600 hover:text-white transition-colors"
+                      >
+                        <Github size={20} />
+                      </a>
+                      <a 
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-white rounded-full text-gray-900 hover:bg-blue-600 hover:text-white transition-colors"
+                      >
+                        <ExternalLink size={20} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
+                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech) => (
+                      <span 
+                        key={tech}
+                        className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
+          <a 
+            href="https://github.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-gray-300 rounded-full text-gray-700 font-semibold hover:border-blue-600 hover:text-blue-600 transition-all"
+          >
+            <Github size={20} />
+            View More on GitHub
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const Contact = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsSubmitting(false);
+    setSubmitted(true);
+    setFormData({ name: '', email: '', message: '' });
+    setTimeout(() => setSubmitted(false), 3000);
+  };
+
+  return (
+    <section id="contact" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+          <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mb-4" />
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Have a project in mind or want to collaborate? I'd love to hear from you!
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Let's Talk</h3>
+            <p className="text-gray-600 mb-8">
+              Whether you have a question, want to start a project, or just want to connect, 
+              feel free to reach out. I'm always open to discussing new projects and opportunities.
+            </p>
+
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Email</div>
+                  <a href="mailto:your@email.com" className="text-gray-600 hover:text-blue-600 transition-colors">
+                    okellorighan3@email.com
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                  <Linkedin size={24} />
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">LinkedIn</div>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
+                    linkedin.com/in/righan-okello
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                  <Github size={24} />
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">GitHub</div>
+                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
+                    github.com/defna2018
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                  placeholder="John Doe"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                  placeholder="john@example.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                <textarea
+                  required
+                  rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                  placeholder="Tell me about your project..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full py-4 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2 ${
+                  submitted ? 'bg-green-500' : 'bg-blue-600 hover:bg-blue-700 hover:shadow-lg'
+                }`}
+              >
+                {isSubmitting ? (
+                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : submitted ? (
+                  <>Message Sent!</>
+                ) : (
+                  <>
+                    <Send size={20} />
+                    Send Message
+                  </>
+                )}
+              </button>
+            </form>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="bg-gray-900 text-white py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-4 md:mb-0">
+            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Okello Righan
+            </div>
+            <p className="text-gray-400 mt-2">Building digital experiences that matter.</p>
+          </div>
+
+          <div className="flex gap-6">
+            <a href="https://github.com/defna2018" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+              <Github size={24} />
+            </a>
+            <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+              <Linkedin size={24} />
+            </a>
+            <a href="mailto:okellorighan3@gmail.com" className="text-gray-400 hover:text-white transition-colors">
+              <Mail size={24} />
+            </a>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <p>© 2025 Okello Righan. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+const App = () => {
+  return (
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <Hero />
+      <About />
+      <Projects />
+      <Contact />
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
