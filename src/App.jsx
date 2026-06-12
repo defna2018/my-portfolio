@@ -116,7 +116,7 @@ const Navbar = () => {
             className="flex items-center gap-3"
           >
             <img 
-              src="\logo2.png" 
+              src="/logo2.png" 
               alt="Infinity" 
               className="h-10 w-auto"
             />
