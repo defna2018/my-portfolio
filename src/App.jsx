@@ -198,7 +198,7 @@ const Hero = () => {
           </motion.h1>
 
           <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Full-Stack Developer & UI/UX Designer crafting beautiful digital experiences
+            Full-Stack Developer & Graphic Designer crafting beautiful digital experiences
           </motion.p>
 
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
