@@ -117,7 +117,7 @@ const Navbar = () => {
           >
             <img 
               src="/logo2.png" 
-              alt="Infinity@OR" 
+              alt="Infinity.OR" 
               className="h-10 w-auto"
             />
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
