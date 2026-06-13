@@ -121,7 +121,7 @@ const Navbar = () => {
               className="h-10 w-auto"
             />
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Infinity@OR
+              Infinity.OR
             </span>
           </motion.div>
 
@@ -604,7 +604,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Infinity@OR
+              Infinity.OR
             </div>
             <p className="text-gray-400 mt-2">Building digital experiences that matter.</p>
           </div>
