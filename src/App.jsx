@@ -51,21 +51,21 @@ const skills = [
 const projects = [
   {
     id: 1,
-    title: "E-Commerce Platform",
-    description: "Full-stack e-commerce solution with real-time inventory, payment processing, and admin dashboard.",
-    tech: ["React", "Node.js", "MongoDB", "Stripe"],
-    image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=500&fit=crop",
-    github: "https://github.com",
-    live: "https://example.com"
+    title: "Fashion-Design ",
+    description: "Full-stack dynamic website about creativity in fashion.",
+    tech: ["React", "Node.js", "MongoDB",],
+    image: "/fashion and design.png",
+    github: "https://defna.netlify.app",
+    live: "/fashion&design.png"
   },
   {
     id: 2,
-    title: "AI Task Manager",
+    title: "Okello's Farm House",
     description: "Smart task management app with AI-powered prioritization and natural language input.",
-    tech: ["Next.js", "OpenAI", "Prisma", "PostgreSQL"],
-    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=500&fit=crop",
+    tech: ["react.js", "OpenAI","PostgreSQL"],
+    image: "/okello farm house logo.png",
     github: "https://github.com",
-    live: "https://example.com"
+    live: "/okello farm house logo.png"
   },
   {
     id: 3,
@@ -83,7 +83,7 @@ const projects = [
     tech: ["React Native", "Firebase", "GraphQL", "AWS"],
     image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=500&fit=crop",
     github: "https://github.com",
-    live: "https://example.com"
+    live: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=500&fit=crop"
   }
 ];
 
@@ -616,7 +616,7 @@ const Footer = () => {
             <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-blue-600 hover:text-white transition-all hover:scale-110">
               <Linkedin size={20} />
             </a>
-            <a href="mailto:okellorighan3@gmail.com" className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-red-500 hover:text-white transition-all hover:scale-110">
+            <a href="https://mail.google.com/mail/u/0/?hl=en#inbox/QgrcJHsHlmgKKnfzGdZgJPhlbtPvPvzvPBv?compose=new" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-red-500 hover:text-white transition-all hover:scale-110">
               <Mail size={20} />
             </a>
             <a href="https://www.instagram.com/am_alphii/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-orange-400 hover:text-white transition-all hover:scale-110">
