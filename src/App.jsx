@@ -51,17 +51,17 @@ const skills = [
 const projects = [
   {
     id: 1,
-    title: "Fashion-Design ",
+    title: "Fashion & Design ",
     description: "Full-stack dynamic website about creativity in fashion.",
     tech: ["React", "Node.js", "MongoDB",],
-    image: "/fashion and design.png",
+    image: "/fashion&design.png",
     github: "https://defna.netlify.app",
     live: "/fashion&design.png"
   },
   {
     id: 2,
     title: "Okello's Farm House",
-    description: "Smart task management app with AI-powered prioritization and natural language input.",
+    description: "Smart task management website on farm activities and Ai empowered.",
     tech: ["react.js", "OpenAI","PostgreSQL"],
     image: "/okello farm house logo.png",
     github: "https://github.com",
