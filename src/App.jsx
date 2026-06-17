@@ -466,39 +466,40 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setIsSubmitting(true);
     setError("");
 
     try {
-   await emailjs.sendForm(
-  'service_rbhim6b',
-  'template_2ygw24p',
-  formRef.current,
-  'TXGg_wpdXi8JY8Zm9'
-);
+      // 1. Send message to YOU
+      await emailjs.sendForm(
+        'service_rbhim6b',
+        'template_2ygw24p',
+        formRef.current,
+        'TXGg_wpdXi8JY8Zm9'
+      );
+
+      // 2. Send auto-reply to CLIENT
+      await emailjs.send(
+        'service_rbhim6b',
+        'template_ipdww9r',        // ← Your auto-reply template
+        {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        },
+        'TXGg_wpdXi8JY8Zm9'
+      );
 
       setSubmitted(true);
-
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
+      setFormData({ name: "", email: "", message: "" });
 
       setTimeout(() => {
         setSubmitted(false);
       }, 5000);
     } catch (err) {
-  console.error("EmailJS Error:", err);
-
-  if (err.text) {
-    setError(err.text);
-  } else {
-    setError("Failed to send message. Please try again.");
-  }
-}
-     finally {
+      console.error("EmailJS Error:", err);
+      setError("Failed to send message. Please try again.");
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -506,7 +507,6 @@ const Contact = () => {
   return (
     <section id="contact" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-6">
-
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -515,20 +515,14 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="text-4xl font-bold text-gray-900">
-            Get In Touch
-          </h2>
-
+          <h2 className="text-4xl font-bold text-gray-900">Get In Touch</h2>
           <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mt-3 mb-4" />
-
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate?
-            I'd love to hear from you.
+            Have a project in mind or want to collaborate? I'd love to hear from you.
           </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-
           {/* Left Side */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -536,29 +530,19 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold mb-6">
-              Let's Talk
-            </h3>
-
+            <h3 className="text-2xl font-bold mb-6">Let's Talk</h3>
             <p className="text-gray-600 mb-8">
-              Feel free to reach out for projects,
-              collaborations, or opportunities.
+              Feel free to reach out for projects, collaborations, or opportunities.
             </p>
 
             <div className="space-y-6">
-
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
                   <Mail size={22} />
                 </div>
-
                 <div>
                   <h4 className="font-semibold">Email</h4>
-
-                  <a
-                    href="mailto:okellorighan3@gmail.com"
-                    className="text-gray-600 hover:text-blue-600"
-                  >
+                  <a href="mailto:okellorighan3@gmail.com" className="text-gray-600 hover:text-blue-600">
                     okellorighan3@gmail.com
                   </a>
                 </div>
@@ -568,16 +552,9 @@ const Contact = () => {
                 <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
                   <Linkedin size={22} />
                 </div>
-
                 <div>
                   <h4 className="font-semibold">LinkedIn</h4>
-
-                  <a
-                    href="https://www.linkedin.com/in/righan-okello-874072405/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-blue-600"
-                  >
+                  <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
                     View Profile
                   </a>
                 </div>
@@ -587,22 +564,14 @@ const Contact = () => {
                 <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
                   <Github size={22} />
                 </div>
-
                 <div>
                   <h4 className="font-semibold">GitHub</h4>
-
-                  <a
-                    href="https://github.com/defna2018"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-blue-600"
-                  >
+                  <a href="https://github.com/defna2018" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
                     github.com/defna2018
                   </a>
                 </div>
               </div>
             </div>
-
           </motion.div>
 
           {/* Form */}
@@ -612,21 +581,14 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className="space-y-6"
-            >
-
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               {error && (
-                <div className="p-4 bg-red-100 text-red-700 rounded-lg">
-                  {error}
-                </div>
+                <div className="p-4 bg-red-100 text-red-700 rounded-lg">{error}</div>
               )}
 
               {submitted && (
                 <div className="p-4 bg-green-100 text-green-700 rounded-lg">
-                  Message sent successfully!
+                  Message sent! Check your email for confirmation.
                 </div>
               )}
 
@@ -665,19 +627,10 @@ const Contact = () => {
                 disabled={isSubmitting}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold flex justify-center items-center gap-2"
               >
-                {isSubmitting ? (
-                  "Sending..."
-                ) : (
-                  <>
-                    <Send size={18} />
-                    Send Message
-                  </>
-                )}
+                {isSubmitting ? "Sending..." : <><Send size={18} /> Send Message</>}
               </button>
-
             </form>
           </motion.div>
-
         </div>
       </div>
     </section>
