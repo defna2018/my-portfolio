@@ -1,5 +1,6 @@
 import myPhoto from './assets/image1.png';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Github, 
@@ -16,7 +17,6 @@ import {
   X,
   Star
 } from 'lucide-react';
-
 // Animation variants
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -78,7 +78,7 @@ const projects = [
   },
   {
     id: 4,
-    title: "Social Media App",
+    title: "Tracking app",
     description: "Mobile-first social platform with real-time messaging, stories, and content recommendations.",
     tech: ["React Native", "Firebase", "GraphQL", "AWS"],
     image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=500&fit=crop",
@@ -445,152 +445,239 @@ const Projects = () => {
 };
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const formRef = useRef(null);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setSubmitted(true);
-    setFormData({ name: '', email: '', message: '' });
-    setTimeout(() => setSubmitted(false), 3000);
+    setError("");
+
+    try {
+   await emailjs.sendForm(
+  'service_rbhim6b',
+  'template_2ygw24p',
+  formRef.current,
+  'TXGg_wpdXi8JY8Zm9'
+);
+
+      setSubmitted(true);
+
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 5000);
+    } catch (err) {
+  console.error("EmailJS Error:", err);
+
+  if (err.text) {
+    setError(err.text);
+  } else {
+    setError("Failed to send message. Please try again.");
+  }
+}
+     finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section id="contact" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-6">
+
+        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-14"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
-          <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mb-4" />
+          <h2 className="text-4xl font-bold text-gray-900">
+            Get In Touch
+          </h2>
+
+          <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mt-3 mb-4" />
+
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate? I'd love to hear from you!
+            Have a project in mind or want to collaborate?
+            I'd love to hear from you.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12">
+
+          {/* Left Side */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Let's Talk</h3>
+            <h3 className="text-2xl font-bold mb-6">
+              Let's Talk
+            </h3>
+
             <p className="text-gray-600 mb-8">
-              Whether you have a question, want to start a project, or just want to connect, 
-              feel free to reach out. I'm always open to discussing new projects and opportunities.
+              Feel free to reach out for projects,
+              collaborations, or opportunities.
             </p>
 
             <div className="space-y-6">
+
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                  <Mail size={24} />
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                  <Mail size={22} />
                 </div>
+
                 <div>
-                  <div className="font-semibold text-gray-900">Email</div>
-                  <a href="mailto:your@email.com" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    okellorighan3@email.com
+                  <h4 className="font-semibold">Email</h4>
+
+                  <a
+                    href="mailto:okellorighan3@gmail.com"
+                    className="text-gray-600 hover:text-blue-600"
+                  >
+                    okellorighan3@gmail.com
                   </a>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                  <Linkedin size={24} />
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                  <Linkedin size={22} />
                 </div>
+
                 <div>
-                  <div className="font-semibold text-gray-900">LinkedIn</div>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
-                    linkedin.com/in/righan-okello
+                  <h4 className="font-semibold">LinkedIn</h4>
+
+                  <a
+                    href="https://www.linkedin.com/in/righan-okello-874072405/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-blue-600"
+                  >
+                    View Profile
                   </a>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                  <Github size={24} />
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                  <Github size={22} />
                 </div>
+
                 <div>
-                  <div className="font-semibold text-gray-900">GitHub</div>
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
+                  <h4 className="font-semibold">GitHub</h4>
+
+                  <a
+                    href="https://github.com/defna2018"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-blue-600"
+                  >
                     github.com/defna2018
                   </a>
                 </div>
               </div>
             </div>
+
           </motion.div>
 
+          {/* Form */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                  placeholder="alphii me"
-                />
-              </div>
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                  placeholder="okello@example.com"
-                />
-              </div>
+              {error && (
+                <div className="p-4 bg-red-100 text-red-700 rounded-lg">
+                  {error}
+                </div>
+              )}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                <textarea
-                  required
-                  rows={4}
-                  value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
-                  placeholder="Tell me about your project..."
-                />
-              </div>
+              {submitted && (
+                <div className="p-4 bg-green-100 text-green-700 rounded-lg">
+                  Message sent successfully!
+                </div>
+              )}
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg"
+              />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg"
+              />
+
+              <textarea
+                name="message"
+                rows="5"
+                placeholder="Your Message"
+                required
+                value={formData.message}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg"
+              />
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-4 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-                  submitted ? 'bg-green-500' : 'bg-blue-600 hover:bg-blue-700 hover:shadow-lg'
-                }`}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold flex justify-center items-center gap-2"
               >
                 {isSubmitting ? (
-                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : submitted ? (
-                  <>Message Sent!</>
+                  "Sending..."
                 ) : (
                   <>
-                    <Send size={20} />
+                    <Send size={18} />
                     Send Message
                   </>
                 )}
               </button>
+
             </form>
           </motion.div>
+
         </div>
       </div>
     </section>
