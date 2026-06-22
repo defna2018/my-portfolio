@@ -15,7 +15,9 @@ import {
   Send,
   Menu,
   X,
-  Star
+  Star,
+  Sun,
+  Moon
 } from 'lucide-react';
 // Animation variants
 const fadeInUp = {
@@ -87,7 +89,43 @@ const projects = [
   }
 ];
 
-const Navbar = () => {
+// Theme Toggle Component
+const ThemeToggle = ({ darkMode, setDarkMode }) => {
+  return (
+    <motion.button
+      whileTap={{ scale: 0.9 }}
+      onClick={() => setDarkMode(!darkMode)}
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 transition-colors"
+      aria-label="Toggle dark mode"
+    >
+      <AnimatePresence mode="wait">
+        {darkMode ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Sun size={20} />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: -90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Moon size={20} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
+  );
+};
+
+const Navbar = ({ darkMode, setDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -106,7 +144,11 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
+      scrolled 
+        ? darkMode 
+          ? 'bg-gray-900/90 backdrop-blur-md shadow-lg' 
+          : 'bg-white/90 backdrop-blur-md shadow-lg'
+        : 'bg-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -125,24 +167,32 @@ const Navbar = () => {
             </span>
           </motion.div>
 
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                className={`transition-colors font-medium ${
+                  darkMode 
+                    ? 'text-gray-300 hover:text-blue-400' 
+                    : 'text-gray-700 hover:text-blue-600'
+                }`}
               >
                 {link.name}
               </a>
             ))}
+            <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
           </div>
 
-          <button 
-            className="md:hidden p-2"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
+            <button 
+              className="p-2"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -152,13 +202,21 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t"
+            className={`md:hidden border-t ${
+              darkMode 
+                ? 'bg-gray-900 border-gray-700' 
+                : 'bg-white border-gray-200'
+            }`}
           >
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="block px-4 py-3 text-gray-700 hover:bg-gray-50"
+                className={`block px-4 py-3 transition-colors ${
+                  darkMode 
+                    ? 'text-gray-300 hover:bg-gray-800' 
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
@@ -171,9 +229,13 @@ const Navbar = () => {
   );
 };
 
-const Hero = () => {
+const Hero = ({ darkMode }) => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-300 ${
+      darkMode 
+        ? 'bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900' 
+        : 'bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'
+    }`}>
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
@@ -193,11 +255,15 @@ const Hero = () => {
             </span>
           </motion.div>
 
-          <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+          <motion.h1 variants={fadeInUp} className={`text-5xl md:text-7xl font-bold mb-6 transition-colors duration-300 ${
+            darkMode ? 'text-white' : 'text-gray-900'
+          }`}>
             Hi, I'm  <span  className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Okello Righan</span>
           </motion.h1>
 
-          <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <motion.p variants={fadeInUp} className={`text-xl md:text-2xl mb-8 max-w-2xl mx-auto transition-colors duration-300 ${
+            darkMode ? 'text-gray-300' : 'text-gray-600'
+          }`}>
             Full-Stack Developer & Graphic Designer crafting beautiful digital experiences
           </motion.p>
 
@@ -211,13 +277,19 @@ const Hero = () => {
           </motion.div>
 
           <motion.div variants={fadeInUp} className="mt-12 flex justify-center gap-6">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className={`transition-colors ${
+              darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+            }`}>
               <Github size={28} />
             </a>
-            <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors">
+            <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className={`transition-colors ${
+              darkMode ? 'text-gray-400 hover:text-blue-400' : 'text-gray-600 hover:text-blue-700'
+            }`}>
               <Linkedin size={28} />
             </a>
-            <a href="mailto:okellorighan3@gmail.com" className="text-gray-600 hover:text-red-500 transition-colors">
+            <a href="mailto:okellorighan3@gmail.com" className={`transition-colors ${
+              darkMode ? 'text-gray-400 hover:text-red-400' : 'text-gray-600 hover:text-red-500'
+            }`}>
               <Mail size={28} />
             </a>
           </motion.div>
@@ -229,15 +301,15 @@ const Hero = () => {
         transition={{ repeat: Infinity, duration: 2 }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
       >
-        <ChevronDown size={32} className="text-gray-400" />
+        <ChevronDown size={32} className={`transition-colors ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} />
       </motion.div>
     </section>
   );
 };
 
-const About = () => {
+const About = ({ darkMode }) => {
   return (
-    <section id="about" className="py-20 bg-white">
+    <section id="about" className={`py-20 transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -246,7 +318,7 @@ const About = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">About Me</h2>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>About Me</h2>
           <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full" />
         </motion.div>
 
@@ -280,27 +352,27 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className={`text-2xl font-bold mb-4 transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               Passionate about building products that make a difference
             </h3>
-            <p className="text-gray-600 mb-6 leading-relaxed">
+            <p className={`mb-6 leading-relaxed transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               I'm a full-stack developer with a passion for creating intuitive, dynamic user experiences. 
               With expertise in modern JavaScript frameworks and a keen eye for design, I bridge the gap 
               between engineering and aesthetics.
             </p>
-            <p className="text-gray-600 mb-8 leading-relaxed">
+            <p className={`mb-8 leading-relaxed transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               When I'm not coding, you'll find me exploring new technologies, contributing to open-source 
               projects, or sharing knowledge with the developer community.
             </p>
             
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className={`p-4 rounded-lg transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-blue-600">12+</div>
-                <div className="text-gray-600">Projects Completed</div>
+                <div className={`transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Projects Completed</div>
               </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className={`p-4 rounded-lg transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-blue-600">8+</div>
-                <div className="text-gray-600">Happy Clients</div>
+                <div className={`transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Happy Clients</div>
               </div>
             </div>
           </motion.div>
@@ -312,7 +384,7 @@ const About = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">Technical Skills</h3>
+          <h3 className={`text-2xl font-bold text-center mb-8 transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Technical Skills</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {skills.map((skill, index) => (
               <motion.div
@@ -348,9 +420,9 @@ const About = () => {
   );
 };
 
-const Projects = () => {
+const Projects = ({ darkMode }) => {
   return (
-    <section id="projects" className="py-20 bg-gray-50">
+    <section id="projects" className={`py-20 transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -359,9 +431,9 @@ const Projects = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Projects</h2>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Featured Projects</h2>
           <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mb-4" />
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className={`max-w-2xl mx-auto transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             A selection of my recent work, showcasing my expertise in full-stack development and UI/UX design.
           </p>
         </motion.div>
@@ -444,7 +516,7 @@ const Projects = () => {
   );
 };
 
-const Contact = () => {
+const Contact = ({ darkMode }) => {
   const formRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -481,7 +553,7 @@ const Contact = () => {
       // 2. Send auto-reply to CLIENT
       await emailjs.send(
         'service_rbhim6b',
-        'template_ipdww9r',        // ← Your auto-reply template
+        'template_ipdww9r',
         {
           name: formData.name,
           email: formData.email,
@@ -505,7 +577,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section id="contact" className={`py-20 transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <motion.div
@@ -515,9 +587,9 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="text-4xl font-bold text-gray-900">Get In Touch</h2>
+          <h2 className={`text-4xl font-bold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Get In Touch</h2>
           <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mt-3 mb-4" />
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className={`max-w-2xl mx-auto transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             Have a project in mind or want to collaborate? I'd love to hear from you.
           </p>
         </motion.div>
@@ -530,8 +602,8 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold mb-6">Let's Talk</h3>
-            <p className="text-gray-600 mb-8">
+            <h3 className={`text-2xl font-bold mb-6 transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Let's Talk</h3>
+            <p className={`mb-8 transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               Feel free to reach out for projects, collaborations, or opportunities.
             </p>
 
@@ -541,8 +613,8 @@ const Contact = () => {
                   <Mail size={22} />
                 </div>
                 <div>
-                  <h4 className="font-semibold">Email</h4>
-                  <a href="mailto:okellorighan3@gmail.com" className="text-gray-600 hover:text-blue-600">
+                  <h4 className={`font-semibold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Email</h4>
+                  <a href="mailto:okellorighan3@gmail.com" className={`hover:text-blue-600 transition-colors ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                     okellorighan3@gmail.com
                   </a>
                 </div>
@@ -553,8 +625,8 @@ const Contact = () => {
                   <Linkedin size={22} />
                 </div>
                 <div>
-                  <h4 className="font-semibold">LinkedIn</h4>
-                  <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
+                  <h4 className={`font-semibold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>LinkedIn</h4>
+                  <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className={`hover:text-blue-600 transition-colors ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                     View Profile
                   </a>
                 </div>
@@ -565,8 +637,8 @@ const Contact = () => {
                   <Github size={22} />
                 </div>
                 <div>
-                  <h4 className="font-semibold">GitHub</h4>
-                  <a href="https://github.com/defna2018" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
+                  <h4 className={`font-semibold transition-colors duration-300 ${darkMode ? 'text-white' : 'text-gray-900'}`}>GitHub</h4>
+                  <a href="https://github.com/defna2018" target="_blank" rel="noopener noreferrer" className={`hover:text-blue-600 transition-colors ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                     github.com/defna2018
                   </a>
                 </div>
@@ -599,7 +671,11 @@ const Contact = () => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full p-3 border rounded-lg"
+                className={`w-full p-3 border rounded-lg transition-colors duration-300 ${
+                  darkMode 
+                    ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500' 
+                    : 'bg-white border-gray-300 text-gray-900'
+                }`}
               />
 
               <input
@@ -609,7 +685,11 @@ const Contact = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full p-3 border rounded-lg"
+                className={`w-full p-3 border rounded-lg transition-colors duration-300 ${
+                  darkMode 
+                    ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500' 
+                    : 'bg-white border-gray-300 text-gray-900'
+                }`}
               />
 
               <textarea
@@ -619,7 +699,11 @@ const Contact = () => {
                 required
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full p-3 border rounded-lg"
+                className={`w-full p-3 border rounded-lg transition-colors duration-300 ${
+                  darkMode 
+                    ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500' 
+                    : 'bg-white border-gray-300 text-gray-900'
+                }`}
               />
 
               <button
@@ -656,7 +740,7 @@ const Footer = () => {
             <a href="https://www.linkedin.com/in/righan-okello-874072405/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-blue-600 hover:text-white transition-all hover:scale-110">
               <Linkedin size={20} />
             </a>
-            <a href="https://mail.google.com/mail/u/0/?hl=en#inbox/QgrcJHsHlmgKKnfzGdZgJPhlbtPvPvzvPBv?compose=new" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-red-500 hover:text-white transition-all hover:scale-110">
+            <a href="mailto:okellorighan3@gmail.com" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-red-500 hover:text-white transition-all hover:scale-110">
               <Mail size={20} />
             </a>
             <a href="https://www.instagram.com/am_alphii/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gray-800 text-gray-400 hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-orange-400 hover:text-white transition-all hover:scale-110">
@@ -683,14 +767,24 @@ const Footer = () => {
 };
 
 const App = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <Hero />
-      <About />
-      <Projects />
-      <Contact />
-      <Footer />
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
+      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+      <Hero darkMode={darkMode} />
+      <About darkMode={darkMode} />
+      <Projects darkMode={darkMode} />
+      <Contact darkMode={darkMode} />
+      <Footer darkMode={darkMode} />
     </div>
   );
 };
