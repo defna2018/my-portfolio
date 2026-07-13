@@ -53,39 +53,39 @@ const skills = [
 const projects = [
   {
     id: 1,
-    title: "Fashion & Design ",
-    description: "Full-stack dynamic website about creativity in fashion.",
-    tech: ["React", "Node.js", "MongoDB",],
-    image: "/fashion&design.png",
+    title: "Voice of Power ",
+    description: "Hand-picked motivational speeches from the world's most influential voices, ready to inspire your next breakthrough.",
+    tech: ["React.js", "Node.js", "MongoDB",],
+    image: "/gold mic.png",
     github: "https://defna.netlify.app",
-    live: "/fashion&design.png"
+    live: "/gold mic.png"
   },
   {
     id: 2,
-    title: "Okello's Farm House",
-    description: "Smart task management website on farm activities and Ai empowered.",
-    tech: ["react.js", "OpenAI","PostgreSQL"],
-    image: "/okello farm house logo.png",
-    github: "https://github.com",
-    live: "/okello farm house logo.png"
+    title: "Intexclo",
+    description: "A dynamic construction company website with interactive features and responsive design.",
+    tech: ["React.js", "Node.js","Tailwind CSS", "MongoDB"],
+    image: "/intex.png",
+    github: "https://intexclo.netlify.app",
+    live: "/intex.png"
   },
   {
     id: 3,
     title: "Real-time Analytics Dashboard",
     description: "Interactive data visualization dashboard with WebSocket updates and custom charts.",
-    tech: ["React", "D3.js", "WebSocket", "Redis"],
+    tech: ["React.js", "D3.js", "WebSocket", "Redis"],
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop",
     github: "https://github.com",
     live: "https://example.com"
   },
   {
     id: 4,
-    title: "Tracking app",
-    description: "Mobile-first social platform with real-time messaging, stories, and content recommendations.",
-    tech: ["React Native", "Firebase", "GraphQL", "AWS"],
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=500&fit=crop",
-    github: "https://github.com",
-    live: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=500&fit=crop"
+    title: "Infinity.OR",
+    description: "My own poertfolio website showcasing my projects and skills.",
+    tech: ["React.js", "Tailwind CSS", "Node.js"],
+    image: "/logo2.png",
+    github: "https://righan.netlify.app",
+    live: "/logo2.png"
   }
 ];
 
