@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Environment variables (NEVER commit real API keys!)
+.env
+.env.local
+.env.*.local
+
+# Optional: keep a template
+# .env.example          ← commit this one (it has fake keys)
