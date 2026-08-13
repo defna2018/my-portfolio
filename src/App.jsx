@@ -1,3 +1,4 @@
+import './ChatBot.css';   // <-- Import the new chatbot CSS
 import myPhoto from './assets/image1.png';
 import React, { useState, useEffect, useRef } from 'react';
 import emailjs from '@emailjs/browser';
@@ -29,29 +30,30 @@ const ChatBot = ({ darkMode }) => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // ---------- EXPANDED FAQ LIST ----------
-  const faqs = [
-    { question: "What are your skills?", answer: "React.js, TypeScript, Node.js, Tailwind CSS, Next.js, UI/UX Design, MongoDB, Redis, WebSocket, and more." },
-    { question: "What projects have you built?", answer: "Voice of Power, Intex Construction, a real‑time analytics dashboard, and this portfolio (Infinity.OR)." },
-    { question: "Are you available for hire?", answer: "Yes! I'm open to freelance, contract, and full‑time opportunities. Reach out at okellorighan3@gmail.com." },
-    { question: "What's your experience?", answer: "2+ years as a full‑stack developer, 12+ projects delivered, and 8+ happy clients." },
-    { question: "How can I contact you?", answer: "Email: okellorighan3@gmail.com | LinkedIn: linkedin.com/in/righan-okello" },
-    { question: "What is your pricing?", answer: "I offer flexible pricing — fixed price for small projects, hourly/retainer for ongoing work, and milestone‑based for full builds. Contact me with your project details for a custom quote." },
-    { question: "What is Infinity.OR?", answer: "Infinity.OR is my personal brand and portfolio. It represents my limitless approach to crafting digital experiences — from front‑end perfection to full‑stack solutions." },
-    { question: "How long does a typical project take?", answer: "Timelines depend on scope, but a typical landing page takes 1‑2 weeks, a full‑stack web app 4‑8 weeks. I'll give you a precise estimate after understanding your requirements." },
-    { question: "Do you offer maintenance after launch?", answer: "Absolutely! I provide ongoing maintenance and support packages to keep your site updated, secure, and performing well." },
-    { question: "Can you redesign an existing website?", answer: "Yes, I can give your current site a modern look and better performance while preserving your content and SEO." },
-    { question: "What is your development process?", answer: "1. Discovery call → 2. Planning & wireframes → 3. Design mockups → 4. Development → 5. Testing → 6. Launch → 7. Post‑launch support. Transparent communication at every step." },
-    { question: "Do you work with startups or small businesses?", answer: "Yes! I love working with startups and small businesses to turn ideas into reality. Let's discuss how I can help your business grow." },
-    { question: "Do you use any CMS?", answer: "I'm experienced with headless CMS solutions like Strapi and Contentful, but many of my projects use custom back‑ends with Node.js and MongoDB." },
-    { question: "What makes you different from other developers?", answer: "I combine strong technical skills with a designer's eye. I don't just write code — I craft experiences that convert users and look great." },
-    { question: "Can I see your previous work?", answer: "Definitely! Scroll up to the Projects section or visit the live demos linked in each project card." },
-    { question: "How do I start a project with you?", answer: "Just send me an email at okellorighan3@gmail.com or use the contact form. I'll get back within 24 hours to schedule a free consultation." }
-  ];
+  // ---------- FAQ LIST ----------
+    const faqs = [
+  { question: "Who are you?",answer: "I'm Okello Righan, a Full-Stack Developer & Graphic Designer. I build websites and apps under my brand, Infinity.OR." },
+  {question: "What do you do?",answer: "I design and build web apps. React, TypeScript, Node.js, Tailwind, Next.js — the modern stack. I also handle UI/UX design."},
+  { question: "What have you built?", answer: "Voice of Power, Intex Construction, a real-time analytics dashboard, and this portfolio site."},
+  {question: "Are you available for hire?", answer: "Yes — freelance, contract, or full-time. Drop me a message and let's talk." },
+  {question: "How much experience do you have?",answer: "2+ years, 12+ projects, 8+ happy clients."},
+  {question: "How do I reach you?",answer: "Email me at okellorighan3@gmail.com or use the contact form. I reply within 24 hours."},
+  {question: "How much do you charge?", answer: "Depends on the project. Fixed price for small jobs, hourly for ongoing work. Tell me what you need and I'll send a quote."},
+  {question: "What is Infinity.OR?",answer: "My brand. It stands for limitless creativity — blending code and design into one."},
+  {question: "How long does a project take?",answer: "Landing page: 2–3 weeks. Full app: 5–8 weeks. I'll give you a clear timeline after we discuss the scope."},
+  {question: "Do you offer support after launch?",answer: "Yes. I offer maintenance packages to keep everything running smoothly."},
+  {question: "Can you redesign my existing site?", answer: "Absolutely. I'll modernize the look, speed it up, and keep your content intact." },
+  {question: "What's your process?",answer: "Discovery → Planning → Design → Development → Testing → Launch → Support. You stay in the loop at every step."},
+  {question: "Do you work with startups?", answer: "Yes. I love working with startups and small teams to turn ideas into real products."},
+  { question: "Do you use CMS platforms?", answer: "I can. I'm familiar with Strapi and Contentful, but I also build custom backends with Node.js and MongoDB."},
+  {question: "Why should I hire you?",answer: "I code *and* design. That means your project looks great and works great — no gaps between the two."},
+  {question: "Can I see your work?",answer: "Sure. Check the Projects section above for live demos and links."},
+  {question: "How do we get started?",answer: "Email me or fill out the contact form. We'll jump on a quick call and take it from there."}
+];
+  
 
   const getTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  // Find exact match (case‑insensitive)
   const findAnswer = (userMessage) => {
     const cleanMsg = userMessage.trim().toLowerCase();
     return faqs.find(faq => faq.question.toLowerCase() === cleanMsg);
@@ -65,7 +67,6 @@ const ChatBot = ({ darkMode }) => {
     setMessages(prev => [...prev, { id: Date.now(), sender: 'user', text, timestamp: getTime() }]);
   };
 
-  // Handle FAQ button click
   const handleFaqClick = (question) => {
     addUserMessage(question);
     const match = findAnswer(question);
@@ -76,7 +77,6 @@ const ChatBot = ({ darkMode }) => {
     }
   };
 
-  // Handle text input
   const handleSend = () => {
     const text = inputValue.trim();
     if (!text) return;
@@ -98,10 +98,9 @@ const ChatBot = ({ darkMode }) => {
     }
   };
 
-  // Welcome message on first open
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      addBotMessage("👋 Welcome! Pick a question below or type one exactly as shown.");
+      addBotMessage(" Welcome! Pick a question below or type one exactly as shown.");
     }
   }, [isOpen]);
 
@@ -109,21 +108,20 @@ const ChatBot = ({ darkMode }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const bgClass = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200';
-  const msgBgBot = darkMode ? 'bg-gray-700 text-gray-100' : 'bg-white text-gray-800';
-  const msgBgUser = 'bg-blue-600 text-white';
-  const inputBg = darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-gray-100 border-gray-200 text-gray-900 placeholder-gray-500';
-  const headerBg = darkMode ? 'bg-gray-900' : 'bg-gray-50';
+  // Tailwind fallbacks for layouts (width/height/flex) are preserved,
+  // but colors are now mainly controlled by our custom CSS classes.
+  const msgBgUser = 'chatbot-user-message';   // custom class
+  const msgBgBot = 'chatbot-bot-message';     // custom class
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="chatbot-wrapper fixed bottom-6 right-6 z-50">
       {/* Toggle Button */}
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-colors ${
-          isOpen ? 'bg-gray-800 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'
+        className={`chatbot-toggle w-14 h-14 rounded-full flex items-center justify-center shadow-2xl ${
+          isOpen ? 'bg-gray-800 text-white' : 'text-white'
         }`}
         aria-label="Toggle chat"
       >
@@ -137,20 +135,16 @@ const ChatBot = ({ darkMode }) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className={`absolute bottom-20 right-0 w-[380px] max-w-[calc(100vw-48px)] h-[520px] max-h-[calc(100vh-140px)] ${bgClass} rounded-2xl shadow-2xl flex flex-col overflow-hidden border`}
+            className="chatbot-panel absolute bottom-20 right-0 w-[380px] max-w-[calc(100vw-48px)] h-[520px] max-h-[calc(100vh-140px)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className={`${headerBg} px-5 py-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-              <h3 className={`font-semibold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                FAQ Assistant
-              </h3>
-              <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                Click a question or type exactly
-              </p>
+            <div className="chatbot-header px-5 py-4 border-b">
+              <h3 className="font-semibold text-sm">Infinity.OR ChatAssistant</h3>
+              <p className="text-xs">Click a question or type exactly</p>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            <div className="chatbot-messages flex-1 overflow-y-auto p-4 space-y-3">
               {messages.map((msg) => (
                 <motion.div
                   key={msg.id}
@@ -172,17 +166,13 @@ const ChatBot = ({ darkMode }) => {
             </div>
 
             {/* FAQ Buttons */}
-            <div className={`px-4 py-2 border-t ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+            <div className="chatbot-quick-replies px-4 py-2">
               <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
                 {faqs.map((faq, i) => (
                   <button
                     key={i}
                     onClick={() => handleFaqClick(faq.question)}
-                    className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border transition-all hover:scale-105 ${
-                      darkMode
-                        ? 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600'
-                        : 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
-                    }`}
+                    className="chatbot-faq-btn whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border"
                   >
                     {faq.question}
                   </button>
@@ -191,7 +181,7 @@ const ChatBot = ({ darkMode }) => {
             </div>
 
             {/* Input */}
-            <div className={`p-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+            <div className="p-4 border-t chatbot-quick-replies">
               <div className="flex items-center gap-2">
                 <input
                   ref={inputRef}
@@ -200,15 +190,15 @@ const ChatBot = ({ darkMode }) => {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type a FAQ question exactly..."
-                  className={`flex-1 px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-blue-500/50 transition-all ${inputBg}`}
+                  className="chatbot-input flex-1 px-4 py-2.5 text-sm outline-none"
                 />
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={handleSend}
                   disabled={!inputValue.trim()}
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
-                    inputValue.trim() ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-300 text-gray-500'
+                  className={`chatbot-send-btn w-10 h-10 rounded-xl flex items-center justify-center text-white ${
+                    !inputValue.trim() ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
                   <Send size={16} />
@@ -245,12 +235,14 @@ const skillVariants = {
 
 // ---------- DATA ----------
 const skills = [
-  { name: "React.js", icon: <Code2 size={24} />, level: 95, color: "bg-blue-500" },
-  { name: "TypeScript", icon: <Terminal size={24} />, level: 90, color: "bg-blue-600" },
+  { name: "HTML5", icon: <Terminal size={24} />, level: 90, color: "bg-blue-600" },
+  { name: "Next.js", icon: <Code2 size={24} />, level: 70, color: "bg-blue-600" },
+  { name: "React.js", icon: <Code2 size={24} />, level: 75, color: "bg-blue-500" },
+  { name: "CSS3", icon: <Palette size={24} />, level: 88, color: "bg-purple-500" },
+  { name: "Tailwind CSS", icon: <Palette size={24} />, level: 70, color: "bg-purple-500" },
+ { name: "Python", icon: <Star size={24} />, level: 76, color: "bg-teal-500" },
   { name: "Node.js", icon: <Database size={24} />, level: 85, color: "bg-green-500" },
-  { name: "UI/UX Design", icon: <Palette size={24} />, level: 88, color: "bg-purple-500" },
-  { name: "Next.js", icon: <Star size={24} />, level: 82, color: "bg-gray-800" },
-  { name: "Tailwind CSS", icon: <Code2 size={24} />, level: 92, color: "bg-cyan-500" },
+  { name: "FastAPI", icon: <Database size={24} />, level: 81, color: "bg-green-500" },
 ];
 
 const projects = [
@@ -426,7 +418,7 @@ const Hero = ({ darkMode }) => (
         </motion.h1>
 
         <motion.p variants={fadeInUp} className={`text-xl md:text-2xl mb-8 max-w-2xl mx-auto transition-colors duration-300 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-          Full-Stack Developer & Graphic Designer crafting beautiful digital experiences
+          Full-Stack Developer & Web Designer crafting beautiful digital experiences
         </motion.p>
 
         <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
